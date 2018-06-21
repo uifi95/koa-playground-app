@@ -1,20 +1,16 @@
-
-const users = [];
+const  { User } = require('../models/user');
 
 module.exports = {
     getUsers(context) {
-        context.ok({ users });
+        User.findAll().then((users) => context.ok({ users }));
     },
     addUser(context) {
         let user = context.request.body;
-        users.push(user);
-        context.ok();
+        User.create(user).then(context.ok);
     },
     updateUser(context) {
         const requestBody = context.request.body;
         const id = requestBody.id;
-        const index = users.indexOf(users.find(function (user) { return user.id === id }));
-        users[index] = requestBody.user;
-        context.ok();
+        User.update(requestBody.user, { where: { id } }).then(context.ok);
     }
 };
