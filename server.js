@@ -6,6 +6,8 @@ const bodyParser = require('koa-bodyparser');
 const helmet = require('koa-helmet');
 const respond = require('koa-respond');
 const formidable = require('koa2-formidable');
+const { setupDb } = require('./setup-db');
+const { setupModels } = require('./models/models');
 
 const app = new Koa();
 const router = new Router();
@@ -18,7 +20,6 @@ if (process.env.NODE_ENV === 'development') {
 
 // for multipart/form-data
 app.use(formidable());
-
 app.use(bodyParser({
     enableTypes: ['json', 'form'],
     jsonLimit: '5mb',
@@ -27,8 +28,6 @@ app.use(bodyParser({
     }
 }));
 app.use(cors());
-
-
 app.use(respond());
 
 // API routes
